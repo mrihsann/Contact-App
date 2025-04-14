@@ -17,13 +17,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MyappTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    NavigationGraph(
-                        startDestination = Screen.Home,
-                        modifier= Modifier.padding(innerPadding)
-                    )
-                }
+            MyappTheme (
+                darkTheme = false
+            ){
+                NavigationGraph(
+                    startDestination = Screen.Home
+                )
             }
         }
     }

@@ -7,8 +7,16 @@ sealed interface Screen {
     data object Home : Screen
 
     @Serializable
-    data object Detail : Screen
+    data class Detail(
+        val name : String,
+        val surname : String,
+        val email : String,
+        val image : String
+    ) : Screen
 
     @Serializable
     data object Settings : Screen
+
+    @Serializable
+    data object Add : Screen
 }

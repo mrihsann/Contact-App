@@ -39,7 +39,13 @@ import com.ihsanarslan.contactapp.ui.detail.components.ContactRow
 
 
 @Composable
-fun DetailScreen(navController: NavController) {
+fun DetailScreen(
+    navController: NavController,
+    name : String,
+    surname : String,
+    image : String,
+    email : String
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -86,7 +92,7 @@ fun DetailScreen(navController: NavController) {
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "İA",
+                        text = "${name.first()}${surname.first()}",
                         style = MaterialTheme.typography.headlineLarge,
                         color = Color.White
                     )
@@ -96,7 +102,7 @@ fun DetailScreen(navController: NavController) {
 
                 // Name
                 Text(
-                    text = "İhsan Arslan",
+                    text = name,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black
@@ -142,7 +148,7 @@ fun DetailScreen(navController: NavController) {
                     ContactRow(
                         icon = Icons.Default.Email,
                         title = "Email",
-                        data = "thearslanihsan@gmail.com",
+                        data = email,
                         isNuMber = false
                     )
                 }

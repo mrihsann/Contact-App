@@ -5,9 +5,12 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import com.ihsanarslan.contactapp.navigation.Screen.Add
 import com.ihsanarslan.contactapp.navigation.Screen.Home
 import com.ihsanarslan.contactapp.navigation.Screen.Detail
 import com.ihsanarslan.contactapp.navigation.Screen.Settings
+import com.ihsanarslan.contactapp.ui.add.AddContactScreen
 import com.ihsanarslan.contactapp.ui.detail.DetailScreen
 import com.ihsanarslan.contactapp.ui.home.HomeScreen
 import com.ihsanarslan.contactapp.ui.settings.SettingsScreen
@@ -15,7 +18,7 @@ import com.ihsanarslan.contactapp.ui.settings.SettingsScreen
 @Composable
 fun NavigationGraph(
     startDestination: Screen,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     val navController = rememberNavController()
     NavHost(
@@ -27,10 +30,20 @@ fun NavigationGraph(
             HomeScreen(navController = navController)
         }
         composable<Detail> {
-            DetailScreen(navController = navController)
+            val args = it.toRoute<Detail>()
+            DetailScreen(
+                navController = navController,
+                name = args.name,
+                surname = args.surname,
+                image = args.image,
+                email = args.email
+            )
         }
         composable<Settings> {
             SettingsScreen()
+        }
+        composable<Add> {
+            AddContactScreen(navController = navController)
         }
     }
 }

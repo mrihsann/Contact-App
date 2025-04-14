@@ -2,6 +2,7 @@ package com.ihsanarslan.contactapp.ui.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -136,7 +137,15 @@ fun HomeScreen(navController: NavController) {
             items(kisiListe.size) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .clickable{ navController.navigate(Screen.Detail(
+                            name = kisiListe[it].name,
+                            surname = kisiListe[it].surname,
+                            email = kisiListe[it].email,
+                            image = kisiListe[it].image
+                        ))
+                        }
                 ) {
                     Box(
                         modifier = Modifier
@@ -180,7 +189,7 @@ fun HomeScreen(navController: NavController) {
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(16.dp),
-            onClick = { navController.navigate(Screen.Detail) },
+            onClick = { navController.navigate(Screen.Add) },
             containerColor = Color(0xFFFF5722),
             contentColor = Color.White,
             shape = RoundedCornerShape(25.dp)
