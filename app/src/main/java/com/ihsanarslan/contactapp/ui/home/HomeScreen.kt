@@ -22,6 +22,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -33,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.ihsanarslan.contactapp.R
 import com.ihsanarslan.contactapp.model.Contact
@@ -44,70 +46,13 @@ import com.ihsanarslan.contactapp.ui.home.components.LazyRowComponent
 @Composable
 fun HomeScreen(navController: NavController) {
 
+    val viewModel : HomeScreenViewModel = viewModel()
+
+    val recentAdded = viewModel.recentAdded.observeAsState()
+    val allContacts = viewModel.allContacts.observeAsState()
+
     var searchText = remember { mutableStateOf("") }
 
-    val kisiListe = listOf(
-        Contact(
-            image = "",
-            name = "İhsan",
-            surname = "Arslan",
-            email = "ihsan.arslan@gmail.com"
-        ),
-        Contact(
-            image = "",
-            name = "Ayşe",
-            surname = "Yılmaz",
-            email = "ayse.yilmaz@hotmail.com"
-        ),
-        Contact(
-            image = "",
-            name = "Mehmet",
-            surname = "Kaya",
-            email = "mehmetkaya@outlook.com"
-        ),
-        Contact(
-            image = "",
-            name = "Zeynep",
-            surname = "Demir",
-            email = "z.demir@company.com"
-        ),
-        Contact(
-            image = "",
-            name = "Can",
-            surname = "Öztürk",
-            email = "can.ozturk@gmail.com"
-        ),
-        Contact(
-            image = "",
-            name = "Elif",
-            surname = "Çelik",
-            email = "elif.celik@yahoo.com"
-        ),
-        Contact(
-            image = "",
-            name = "Burak",
-            surname = "Şahin",
-            email = "buraksahin@gmail.com"
-        ),
-        Contact(
-            image = "",
-            name = "Selin",
-            surname = "Yıldız",
-            email = "selinyildiz@company.com"
-        ),
-        Contact(
-            image = "",
-            name = "Emre",
-            surname = "Aydın",
-            email = "emre.aydin@outlook.com"
-        ),
-        Contact(
-            image = "",
-            name = "Deniz",
-            surname = "Koç",
-            email = "deniz.koc@gmail.com"
-        )
-    )
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             item {
@@ -123,27 +68,27 @@ fun HomeScreen(navController: NavController) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(modifier = Modifier.padding(start = 15.dp),text = "Recent Added", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
                 Spacer(modifier = Modifier.height(8.dp))
-                LazyRowComponent(kisiList = kisiListe)
+                LazyRowComponent(kisiList = recentAdded.value ?: emptyList())
                 Spacer(modifier = Modifier.height(24.dp))
                 Text(
                     modifier = Modifier.padding(start = 15.dp),
-                    text = "My Contacts (${kisiListe.size})",
+                    text = "My Contacts (${allContacts.value?.size})",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold
                 )
                 Spacer(modifier = Modifier.height(8.dp))
             }
 
-            items(kisiListe.size) {
+            items(allContacts.value!!.size) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .padding(horizontal = 16.dp, vertical = 8.dp)
                         .clickable{ navController.navigate(Screen.Detail(
-                            name = kisiListe[it].name,
-                            surname = kisiListe[it].surname,
-                            email = kisiListe[it].email,
-                            image = kisiListe[it].image
+                            name = allContacts.value!![it].name,
+                            surname = allContacts.value!![it].surname,
+                            email = allContacts.value!![it].email,
+                            image = allContacts.value!![it].image
                         ))
                         }
                 ) {
@@ -154,9 +99,9 @@ fun HomeScreen(navController: NavController) {
                             .background(Color.LightGray),
                         contentAlignment = Alignment.Center
                     ) {
-                        if (kisiListe[it].image.isEmpty()) {
+                        if (allContacts.value!![it].image.isEmpty()) {
                             Text(
-                                text = "${kisiListe[it].name.first()}${kisiListe[it].surname.first()}",
+                                text = "${allContacts.value!![it].name.first()}${allContacts.value!![it].surname.first()}",
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
                                 textAlign = TextAlign.Center
@@ -172,12 +117,12 @@ fun HomeScreen(navController: NavController) {
                     Spacer(modifier = Modifier.width(16.dp))
                     Column {
                         Text(
-                            text = "${kisiListe[it].name} ${kisiListe[it].surname}",
+                            text = "${allContacts.value!![it].name} ${allContacts.value!![it].surname}",
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Medium
                         )
                         Text(
-                            text = kisiListe[it].email,
+                            text = allContacts.value!![it].email,
                             fontSize = 14.sp,
                             color = Color.Gray
                         )
