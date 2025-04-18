@@ -24,10 +24,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ihsanarslan.contactapp.R
-import com.ihsanarslan.contactapp.model.Contact
+import com.ihsanarslan.contactapp.data.local.ContactEntity
 
 @Composable
-fun LazyRowComponent(kisiList: List<Contact>) {
+fun LazyRowComponent(kisiList: List<ContactEntity>) {
     LazyRow(contentPadding = PaddingValues(horizontal = 16.dp)) {
         items(kisiList.size) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {

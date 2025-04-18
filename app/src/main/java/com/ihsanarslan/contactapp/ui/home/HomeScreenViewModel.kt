@@ -2,83 +2,29 @@ package com.ihsanarslan.contactapp.ui.home
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ihsanarslan.contactapp.model.Contact
+import androidx.lifecycle.viewModelScope
+import com.ihsanarslan.contactapp.data.local.ContactEntity
+import com.ihsanarslan.contactapp.domain.repository.ContactDaoRepositoryImpl
+import com.ihsanarslan.contactapp.domain.usecase.GetAllContactsUseCase
+import com.ihsanarslan.contactapp.domain.usecase.InsertContactUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeScreenViewModel : ViewModel() {
+@HiltViewModel
+class HomeScreenViewModel @Inject constructor(
+    private val getAllContactsUseCase: GetAllContactsUseCase,
+    private val insertContactUseCase: InsertContactUseCase
+) : ViewModel() {
 
-    val recentAdded = MutableLiveData<List<Contact>>()
+    val recentAdded = getAllContactsUseCase()
 
-    val allContacts = MutableLiveData<List<Contact>>()
+    val allContacts = getAllContactsUseCase()
 
-    init {
-        val kisiListe = listOf(
-        Contact(
-            image = "",
-            name = "İhsan",
-            surname = "Arslan",
-            email = "ihsan.arslan@gmail.com"
-        ),
-        Contact(
-            image = "",
-            name = "Ayşe",
-            surname = "Yılmaz",
-            email = "ayse.yilmaz@hotmail.com"
-        ),
-        Contact(
-            image = "",
-            name = "Mehmet",
-            surname = "Kaya",
-            email = "mehmetkaya@outlook.com"
-        ),
-        Contact(
-            image = "",
-            name = "Zeynep",
-            surname = "Demir",
-            email = "z.demir@company.com"
-        ),
-        Contact(
-            image = "",
-            name = "Can",
-            surname = "Öztürk",
-            email = "can.ozturk@gmail.com"
-        ),
-        Contact(
-            image = "",
-            name = "Elif",
-            surname = "Çelik",
-            email = "elif.celik@yahoo.com"
-        ),
-        Contact(
-            image = "",
-            name = "Burak",
-            surname = "Şahin",
-            email = "buraksahin@gmail.com"
-        ),
-        Contact(
-            image = "",
-            name = "Selin",
-            surname = "Yıldız",
-            email = "selinyildiz@company.com"
-        ),
-        Contact(
-            image = "",
-            name = "Emre",
-            surname = "Aydın",
-            email = "emre.aydin@outlook.com"
-        ),
-        Contact(
-            image = "",
-            name = "Deniz",
-            surname = "Koç",
-            email = "deniz.koc@gmail.com"
-        )
-    )
-
-        recentAdded.value = kisiListe.take(3)
-
-        allContacts.value = kisiListe
+    fun insert(contact: ContactEntity) {
+        viewModelScope.launch {
+            insertContactUseCase(contact)
+        }
     }
-
-
 
 }
