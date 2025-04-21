@@ -3,6 +3,8 @@ package com.ihsanarslan.contactapp.domain.repository
 import androidx.lifecycle.LiveData
 import com.ihsanarslan.contactapp.data.local.ContactDao
 import com.ihsanarslan.contactapp.data.local.ContactEntity
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class ContactDaoRepositoryImpl @Inject constructor(
@@ -13,8 +15,11 @@ class ContactDaoRepositoryImpl @Inject constructor(
         contactDao.insertContact(contact)
     }
 
-    fun getAllContacts(): LiveData<List<ContactEntity>> {
-        return contactDao.getAllContacts()
+    fun getAllContacts(): Flow<List<ContactEntity>> = flow {
+         val contacts = contactDao.getAllContacts()
+        contacts.collect { value ->
+            emit(value)
+        }
     }
 
     suspend fun getContactById(id: Int): ContactEntity {

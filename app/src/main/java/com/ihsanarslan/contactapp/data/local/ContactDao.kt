@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ContactDao{
@@ -12,7 +13,7 @@ interface ContactDao{
     suspend fun insertContact(contact: ContactEntity)
 
     @Query("SELECT * FROM contacts")
-    fun getAllContacts(): LiveData<List<ContactEntity>>
+    fun getAllContacts(): Flow<List<ContactEntity>>
 
     @Query("SELECT * FROM contacts WHERE id = :id")
     suspend fun getContactById(id: Int): ContactEntity

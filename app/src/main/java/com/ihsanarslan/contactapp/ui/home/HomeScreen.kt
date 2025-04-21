@@ -22,6 +22,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,6 +36,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.ihsanarslan.contactapp.R
@@ -48,8 +50,8 @@ fun HomeScreen(navController: NavController) {
 
     val viewModel = hiltViewModel<HomeScreenViewModel>()
 
-    val recentAdded = viewModel.recentAdded.observeAsState(emptyList())
-    val allContacts = viewModel.allContacts.observeAsState(emptyList())
+    val allContacts = viewModel.allContact.collectAsStateWithLifecycle()
+    val recentAdded = viewModel.recentAdded.collectAsStateWithLifecycle()
 
     var searchText = remember { mutableStateOf("") }
 
