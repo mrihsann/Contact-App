@@ -34,18 +34,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.ihsanarslan.contactapp.ui.detail.components.ContactRow
 
 
 @Composable
 fun DetailScreen(
-    navController: NavController,
-    name : String,
-    surname : String,
-    image : String,
-    email : String
-) {
+    navController: NavController) {
+
+    val viewModel = hiltViewModel<DetailViewModel>()
+
+    val contact = viewModel.contact.collectAsStateWithLifecycle()
+
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -92,7 +95,7 @@ fun DetailScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "${name.first()}${surname.first()}",
+                        text = "${contact.value.name.first()}${contact.value.surname.first()}",
                         style = MaterialTheme.typography.headlineLarge,
                         color = Color.White
                     )
@@ -102,7 +105,7 @@ fun DetailScreen(
 
                 // Name
                 Text(
-                    text = name,
+                    text = contact.value.name,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black
@@ -148,7 +151,7 @@ fun DetailScreen(
                     ContactRow(
                         icon = Icons.Default.Email,
                         title = "Email",
-                        data = email,
+                        data = contact.value.email,
                         isNuMber = false
                     )
                 }

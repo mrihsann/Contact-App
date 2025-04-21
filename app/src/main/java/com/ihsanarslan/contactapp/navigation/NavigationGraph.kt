@@ -30,14 +30,8 @@ fun NavigationGraph(
             HomeScreen(navController = navController)
         }
         composable<Detail> {
-            val args = it.toRoute<Detail>()
             DetailScreen(
-                navController = navController,
-                name = args.name,
-                surname = args.surname,
-                image = args.image,
-                email = args.email
-            )
+                navController = navController)
         }
         composable<Settings> {
             SettingsScreen()

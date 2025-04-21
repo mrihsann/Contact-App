@@ -2,6 +2,7 @@ package com.ihsanarslan.contactapp.di
 
 import com.ihsanarslan.contactapp.domain.repository.ContactDaoRepositoryImpl
 import com.ihsanarslan.contactapp.domain.usecase.GetAllContactsUseCase
+import com.ihsanarslan.contactapp.domain.usecase.GetContactByIdUseCase
 import com.ihsanarslan.contactapp.domain.usecase.InsertContactUseCase
 import dagger.Module
 import dagger.Provides
@@ -24,6 +25,13 @@ object UseCaseModule {
     @Singleton
     fun provideGetAllContactsUseCase(repositoryImpl: ContactDaoRepositoryImpl) : GetAllContactsUseCase {
         return GetAllContactsUseCase(repositoryImpl)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetContactByIdUseCase(repositoryImpl: ContactDaoRepositoryImpl) : GetContactByIdUseCase {
+        return GetContactByIdUseCase(repositoryImpl)
+
     }
 
 }

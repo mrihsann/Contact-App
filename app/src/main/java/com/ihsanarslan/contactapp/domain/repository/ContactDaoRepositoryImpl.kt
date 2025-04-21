@@ -22,8 +22,10 @@ class ContactDaoRepositoryImpl @Inject constructor(
         }
     }
 
-    suspend fun getContactById(id: Int): ContactEntity {
-        return contactDao.getContactById(id)
+    fun getContactById(id: Int): Flow<ContactEntity> = flow {
+        contactDao.getContactById(id).collect { value ->
+            emit(value)
+        }
     }
 
     suspend fun deleteContactById(id: Int) {
